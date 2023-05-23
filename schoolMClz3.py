@@ -87,15 +87,13 @@ class crudStudent(Student):
         return -1
 
 
-    def del_student(self):
-        stdID = int(input("Student ID: "))
+    def del_student(self, stdID):
         for student in self.student_table:
             if student.getStudentID() == stdID:
                 print(self.student_table.index(student))
                 self.student_table.remove(student)
 
-    def edit_student(self):
-        stdID = int(input("Student ID: "))
+    def edit_student(self, stdID):
         for student in self.student_table:
             if student.getStudentID() == stdID:
                 stdID = int(input("Student ID: "))
@@ -118,13 +116,18 @@ class crudStudent(Student):
             choice = input("Enter Your Choice: ")
             match choice:
                 case "A":
-                   self.add_student()
+                    stdID = int(input("Enter Student ID: "))
+                    stdName = input("Enter Student Name: ")
+                    self.add_student(stdID, stdName)
                 case "B":
-                   self.get_student()
+                    stdID = int(input("Enter Student ID: "))
+                    self.get_student(stdID)
                 case "C":
-                   self.del_student()
+                    stdID = int(input("Enter Student ID: "))
+                    self.del_student(stdID)
                 case "D":
-                   self.edit_student()
+                    stdID = int(input("Enter Student ID: "))
+                    self.edit_student(stdID)
                 case "Q":
                     break
 
@@ -151,15 +154,13 @@ class crudSubject(Subject):
         return self.subject_table[index].getSubjectName()
 
 
-    def del_subject(self):
-        subID = int(input("Subject ID: "))
+    def del_subject(self, subID):       
         for subject in self.subject_table:
             if subject.getSubjectID() == subID:
                 print(self.subject_table.index(subject))
                 self.subject_table.remove(subject)
 
-    def edit_subject(self):
-        subID = int(input("Subject ID: "))
+    def edit_subject(self, subID):
         for subject in self.subject_table:
             if subject.getSubjectID() == subID:
                 subID = int(input("Subject ID: "))
@@ -182,13 +183,18 @@ class crudSubject(Subject):
             choice = input("Enter Your Choice: ")
             match choice:
                 case "A":
-                   self.add_subject()
+                    subID = int(input("Enter Subject ID: "))
+                    subName = input("Enter Subject Name: ")
+                    self.add_subject(subID, subName)
                 case "B":
-                   self.get_subject()
+                    subID = int(input("Enter Subject ID: "))
+                    self.get_subject(subID)
                 case "C":
-                   self.del_subject()
+                    subID = int(input("Enetr Subject ID: "))
+                    self.del_subject(subID)
                 case "D":
-                   self.edit_subject()
+                    subID = int(input("Enter Subject ID: "))
+                    self.edit_subject(subID)
                 case "Q":
                     break
 
@@ -200,9 +206,7 @@ class crudResult:
     def __init__(self):
         pass
 
-    def add_result(self):
-        stdID = crudStudent().get_student(int(input("Student ID: ")))
-        subID = crudSubject().get_subject(int(input("Subject ID: ")))
+    def add_result(self, stdID, subID):    
         if stdID > -1 and subID > -1:
             mark = int(input("Mark: "))
             self.result_table.append(Result(stdID, subID, mark))
@@ -210,33 +214,33 @@ class crudResult:
         else:
             print("invalid_stundetid_or_subjectid")
 
-    def get_result(self):
+    def get_result(self, stdID):
         total = 0
         average = 0
-        stdID = crudStudent().get_student(int(input("Student ID: ")))
         for result in self.result_table:
             if result.getStudent() == stdID:
                 total += result.getMarks()
-                average = total/3
+                average = total/len(crudSubject().subject_table)
                 print(crudSubject().get_subject_name(result.getSubject()), result.getMarks())
         print("Total Marks: ", total)
         print("Average Marks: ", average)
 
 
-    def del_result(self):
-        stdID = int(input("Student ID: "))
-        for student in self.student_table:
-            if student.getStudentID() == stdID:
-                print(self.student_table.index(student))
-                self.student_table.remove(student)
+    def del_result(self, stdID, subID):
+        if stdID > -1 and subID > -1:
+            for result in self.result_table:
+                if stdID == result.getStudent() and subID == result.getSubject(): 
+                    print(self.result_table.index(result))
+                    self.result_table.remove(result)
+                    break
 
-    def edit_result(self):
-        stdID = int(input("Student ID: "))
-        for student in self.student_table:
-            if student.getStudentID() == stdID:
-                stdID = int(input("Student ID: "))
-                stdName = input("Student Name: ")
-                self.student_table[self.student_table.index(student)] = Student(stdName, stdID)
+    def edit_result(self, stdID, subID):
+        for result in self.result_table:
+            if stdID == result.getStudent() and subID == result.getSubject():
+                mark = int(input("Mark: "))
+                self.result_table[self.result_table.index(result)] = Result(stdID, subID, mark)
+                print(stdID, subID, mark)
+                break
 
     def marks_total(self):
         stdID = int(input("Student ID: "))
@@ -263,33 +267,62 @@ class crudResult:
             choice = input("Enter Your Choice: ")
             match choice:
                 case "A":
-                   self.add_result()
+                    stdID = crudStudent().get_student(int(input("Student ID: ")))
+                    subID = crudSubject().get_subject(int(input("Subject ID: ")))
+                    self.add_result(stdID, subID)
                 case "B":
-                   self.get_result()
+                    stdID = crudStudent().get_student(int(input("Student ID: ")))
+                    self.get_result(stdID)
                 case "C":
-                   self.del_result()
+                    stdID = int(input("Student ID: "))
+                    self.del_result(stdID)
                 case "D":
-                   self.edit_result()
+                    stdID = int(input("Student ID: "))
+                    self.edit_result(stdID)
                 case "Q":
                     break
 
+
+
+while (True):
+    print("*********************************")
+    print("    Welcome To ABC University    ")
+    print("=================================")
+    print("      Student Management         ")
+    print("*********************************")
+    print(" 1. Press A for Student Records  ")
+    print(" 2. Press B for Subject Records  ")
+    print(" 3. Press C for Result Records   ")
+    print(" 5. Press Q for Exit             ")
+    print("*********************************")
+    choice = input("Enter Your Choice:      ")
+    match choice:
+        case "A":
+            crudStudent().controller()
+        case "B":
+            crudSubject().controller()
+        case "C":
+            crudResult().controller()
+        case "Q":
+            break
+
    
 
-interfaceStudent = crudStudent()
-interfaceStudent.add_student(1000, "Vikum")
-interfaceStudent.add_student(1001, "Pasindu")
-interfaceStudent.add_student(1002, "Kasun")
-interfaceStudent.add_student(1003, "Namal")
+# interfaceStudent = crudStudent()
+# interfaceStudent.add_student(1000, "Vikum")
+# interfaceStudent.add_student(1001, "Pasindu")
+# interfaceStudent.add_student(1002, "Kasun")
+# interfaceStudent.add_student(1003, "Namal")
 
 
-interfaceSubject = crudSubject()
-interfaceSubject.add_subject(1000, "Maths")
-interfaceSubject.add_subject(1001, "Music")
-interfaceSubject.add_subject(1002, "Social")
-interfaceSubject.add_subject(1003, "Science")
+# interfaceSubject = crudSubject()
+# interfaceSubject.add_subject(1000, "Maths")
+# interfaceSubject.add_subject(1001, "Music")
+# interfaceSubject.add_subject(1002, "Social")
+# interfaceSubject.add_subject(1003, "Science")
 
-interfacecrudResult = crudResult()
-interfacecrudResult.controller()
+# interfacecrudResult = crudResult()
+# interfacecrudResult.controller()
 
 
 

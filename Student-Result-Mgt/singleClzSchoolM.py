@@ -228,17 +228,20 @@ class crudResult:
         subID = crudSubject().get_subject(int(input("Subject ID: ")))
         if stdID > -1 and subID > -1:
             for result in self.result_table:
-                print(self.result_table.index(result))
-                self.result_table.remove(result)
+                if stdID == result.getStudent() and subID == result.getSubject(): 
+                    print(self.result_table.index(result))
+                    self.result_table.remove(result)
+                    break
 
     def edit_result(self):
         stdID = crudStudent().get_student(int(input("Student ID: ")))
         subID = crudSubject().get_subject(int(input("Subject ID: ")))
         for result in self.result_table:
-            if stdID > -1 and subID > -1:
+            if stdID == result.getStudent() and subID == result.getSubject():
                 mark = int(input("Mark: "))
                 self.result_table[self.result_table.index(result)] = Result(stdID, subID, mark)
                 print(stdID, subID, mark)
+                break
 
 
     def controller(self):
@@ -267,23 +270,43 @@ class crudResult:
                 case "Q":
                     break
 
-   
+while (True):
+    print("*********************************")
+    print("    Welcome To ABC University    ")
+    print("=================================")
+    print("      Student Management         ")
+    print("*********************************")
+    print(" 1. Press A for Student Records  ")
+    print(" 2. Press B for Subject Records  ")
+    print(" 3. Press C for Result Records   ")
+    print(" 5. Press Q for Exit             ")
+    print("*********************************")
+    choice = input("Enter Your Choice:      ")
+    match choice:
+        case "A":
+            crudStudent().controller()
+        case "B":
+            crudSubject().controller()
+        case "C":
+            crudResult().controller()
+        case "Q":
+            break
 
-interfaceStudent = crudStudent()
-interfaceStudent.add_student(1000, "Vikum")
-interfaceStudent.add_student(1001, "Pasindu")
-interfaceStudent.add_student(1002, "Kasun")
-interfaceStudent.add_student(1003, "Namal")
+# interfaceStudent = crudStudent()
+# interfaceStudent.add_student(1000, "Vikum")
+# interfaceStudent.add_student(1001, "Pasindu")
+# interfaceStudent.add_student(1002, "Kasun")
+# interfaceStudent.add_student(1003, "Namal")
 
 
-interfaceSubject = crudSubject()
-interfaceSubject.add_subject(1000, "Maths")
-interfaceSubject.add_subject(1001, "Music")
-interfaceSubject.add_subject(1002, "Social")
-interfaceSubject.add_subject(1003, "Science")
+# interfaceSubject = crudSubject()
+# interfaceSubject.add_subject(1000, "Maths")
+# interfaceSubject.add_subject(1001, "Music")
+# interfaceSubject.add_subject(1002, "Social")
+# interfaceSubject.add_subject(1003, "Science")
 
-interfacecrudResult = crudResult()
-interfacecrudResult.controller()
+# interfacecrudResult = crudResult()
+# interfacecrudResult.controller()
 
 
 
